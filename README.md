@@ -8,11 +8,31 @@ Any practical DNA sequencing process can be accurately modelled as random sampli
 First, you need to generate the mbedtls library:
 ```
 cd 3rd-party/mbedtls-3.2.1
+python -m pip install -r scripts/basic.requirements.txt
 make -j 
 ```
 
-Then, to recompile and install TestU01 library: 
+Then, to install TestU01 library: 
 ```
 cd 3rd-party
 testu01_install.sh
+```
+
+To build:
+
+```
+mkdir build && cd build
+cmake ..
+
+```
+
+To run statistical test:
+
+```
+# smallCrush
+./rbg_test -v -s
+# Crush
+./rbg_test -v -m
+# bigCrush
+./rbg_test -v -b
 ```

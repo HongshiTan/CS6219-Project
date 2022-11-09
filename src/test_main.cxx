@@ -44,8 +44,6 @@ unsigned int test_function (void)
     uint32_t index = counter % (TEMP_BUFFER_SIZE / sizeof(uint32_t));
     if (index == 0)
     {
-        printf("refill\n");
-        fflush(stdout);
         rbg.fill(buffer, TEMP_BUFFER_SIZE);
     }
     uint32_t rn = ((uint32_t *)buffer)[index];
@@ -72,7 +70,7 @@ int main (int argc, char** argv) {
     unif01_Gen* gen = unif01_CreateExternGenBits("rbg", test_function);
 
     // Config options for TestU01
-    swrite_Basic = FALSE;  // Turn off TestU01 verbosity by default
+    swrite_Basic = TRUE;  // Turn off TestU01 verbosity by default
     // reenable by -v option.
 
     // Config options for tests
