@@ -5,7 +5,13 @@ Any practical DNA sequencing process can be accurately modelled as random sampli
 
 ## How to use
 
-To recompile and install TestU01 library, 
+First, you need to generate the mbedtls library:
+```
+cd 3rd-party/mbedtls-3.2.1
+make -j 
+```
+
+Then, to recompile and install TestU01 library: 
 ```
 cd 3rd-party
 testu01_install.sh
