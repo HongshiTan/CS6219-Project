@@ -11,7 +11,8 @@
 #include <mbedtls/error.h>
 #include <mbedtls/sha256.h>
 
-#include "sequence.hxx"
+#include "sequence_sim.hxx"
+#include "sequence_real_data.hxx"
 #include "random_bit_generator.hxx"
 
 #define SHA256_DIGEST_SIZE 32
@@ -28,10 +29,16 @@ void print_buf(unsigned char *buf, size_t len) {
     printf("\n");
 }
 
-int main() {
-    Sequence seq(16);
-    std::cout << seq.entropy() << std::endl;
+int main (int argc, char** argv) {
+    std::string filename;
+    if (argc > 1)
+    {
+        filename = argv[1];
+    }
 
+    DateSequence seq(16, filename);
+    std::cout << seq.entropy() << std::endl;
+#if 1
     RandonBitGenerator rbg(seq);
 
     std::uint8_t rnd[BUFSIZ];
@@ -48,5 +55,6 @@ int main() {
     }
 
     std::cout << entropy << std::endl;
+#endif
     return 0;
 }

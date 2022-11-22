@@ -6,7 +6,7 @@
 #define SHA256_BLOCK_BITS  (SHA256_BLOCK_BYTES * 8)
 
 class RandonBitGenerator {
-    Sequence<> seq;
+    Sequence<> &seq;
 
     std::vector<std::uint8_t> entropy;
 
@@ -54,7 +54,7 @@ class RandonBitGenerator {
     }
 
   public:
-    RandonBitGenerator(Sequence<> seq) : seq(seq) {
+    RandonBitGenerator(Sequence<> &seq) : seq(seq) {
     }
 
     void fill(std::uint8_t *buf, size_t len) {

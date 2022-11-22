@@ -11,7 +11,7 @@
 #include <mbedtls/error.h>
 #include <mbedtls/sha256.h>
 
-#include "sequence.hxx"
+#include "sequence_real_data.hxx"
 #include "random_bit_generator.hxx"
 
 extern "C" {
@@ -29,8 +29,8 @@ void print_buf(unsigned char *buf, size_t len) {
 }
 
 
-
-Sequence seq(16);
+std::string file_name = "../../clustered-nanopore-reads-dataset/Clusters.txt";
+Sequence seq(16, file_name );
 
 RandonBitGenerator rbg(seq);
 
