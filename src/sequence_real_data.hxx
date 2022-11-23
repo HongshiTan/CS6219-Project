@@ -7,7 +7,7 @@
 
 #include "sequence.hxx"
 
-template <class UINT = unsigned, UINT RANGE = 16> class DateSequence : public Sequence<UINT, RANGE> {
+template <class UINT = unsigned, UINT RANGE = 16> class DataSequence : public Sequence<UINT, RANGE> {
     std::uniform_int_distribution<UINT> dist;
     std::ranlux48 rng;
     std::set<UINT> partition;
@@ -27,11 +27,11 @@ private:
 public:
 
     //using BaseSequence = Sequence<UINT, RANGE>;
-    DateSequence(const unsigned num_strands)
+    DataSequence(const unsigned num_strands)
         : Sequence<UINT, RANGE>(num_strands), rng(rd()), dist(1, (1 << RANGE) - 1) {
         init(num_strands);
     }
-    DateSequence(const unsigned num_strands, std::string &filename)
+    DataSequence(const unsigned num_strands, std::string &filename)
         : Sequence<UINT, RANGE>(num_strands), rng(rd()), dist(1, (1 << RANGE) - 1) {
 
 

@@ -36,7 +36,7 @@ int main (int argc, char** argv) {
         filename = argv[1];
     }
 
-    DateSequence seq(16, filename);
+    DataSequence seq(16, filename);
     std::cout << seq.entropy() << std::endl;
 #if 1
     RandonBitGenerator rbg(seq);
