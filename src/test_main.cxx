@@ -29,7 +29,7 @@ void print_buf(unsigned char *buf, size_t len) {
 }
 
 
-std::string file_name = "../../clustered-nanopore-reads-dataset/Clusters.txt";
+std::string file_name = "../dataset/clustered-nanopore-reads-dataset/Clusters.txt";
 DataSequence seq(64, file_name );
 
 RandonBitGenerator rbg(seq);
