@@ -32,6 +32,7 @@ class DataSequence : public Sequence<UINT, RANGE> {
           dist(1, (1 << RANGE) - 1) {
         init(num_strands);
     }
+
     DataSequence(const unsigned num_strands, std::string &filename)
         : Sequence<UINT, RANGE>(num_strands), rng(rd()),
           dist(1, (1 << RANGE) - 1) {
@@ -87,6 +88,7 @@ class DataSequence : public Sequence<UINT, RANGE> {
         dist            = sampling_distribution;
         with_file_input = true;
     }
+
     double entropy() override {
         if (with_file_input) {
             std::cout << "entropy calculation for real data is not implemented"
