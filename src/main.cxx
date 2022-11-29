@@ -11,9 +11,9 @@
 #include <mbedtls/error.h>
 #include <mbedtls/sha256.h>
 
-#include "sequence_sim.hxx"
-#include "sequence_real_data.hxx"
 #include "random_bit_generator.hxx"
+#include "sequence_real_data.hxx"
+#include "sequence_sim.hxx"
 
 #define SHA256_DIGEST_SIZE 32
 #define SHA256_DIGEST_BITS (SHA256_DIGEST_SIZE * 8)
@@ -22,17 +22,15 @@
 #define SHA256_BLOCK_WORDS (SHA256_BLOCK_BYTES / 8)
 #define SHA256_BLOCK_BITS  (SHA256_BLOCK_BYTES * 8)
 
-
 void print_buf(unsigned char *buf, size_t len) {
     for (size_t i = 0; i < len; i++)
         printf(" %02hhx", buf[i]);
     printf("\n");
 }
 
-int main (int argc, char** argv) {
+int main(int argc, char **argv) {
     std::string filename;
-    if (argc > 1)
-    {
+    if (argc > 1) {
         filename = argv[1];
     }
 
