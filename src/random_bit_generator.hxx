@@ -1,3 +1,14 @@
+#pragma once
+
+#include <array>
+#include <bitset>
+#include <cstring>
+#include <vector>
+
+#include "mbedtls/error.h"
+#include "mbedtls/sha256.h"
+#include "sequence.hxx"
+
 #define SHA256_DIGEST_SIZE 32
 #define SHA256_DIGEST_BITS (SHA256_DIGEST_SIZE * 8)
 
@@ -63,7 +74,7 @@ class RandonBitGenerator {
         }
 
         while (entropy.size() < len) {
-            memmove(buf, entropy.data(), entropy.size());
+            memcpy(buf, entropy.data(), entropy.size());
             buf += entropy.size();
             len -= entropy.size();
 
@@ -71,7 +82,7 @@ class RandonBitGenerator {
             refresh();
         }
 
-        memmove(buf, entropy.data(), len);
+        memcpy(buf, entropy.data(), len);
         entropy.erase(entropy.begin(), entropy.begin() + len);
     }
 };
