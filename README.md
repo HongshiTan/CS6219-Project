@@ -76,4 +76,5 @@ The NIST package contains 15 tests, while TestU01 contains most existing RNGs an
 
 ## Reference
 [1] Nanopore sequencing dataset https://github.com/microsoft/clustered-nanopore-reads-dataset
-[2] Minimum edit distance calculateion https://github.com/HongshiTan/CS6219-Project.git
+
+[2] Minimum edit distance calculation https://github.com/athlohangade/minimum-edit-distance
