@@ -17,14 +17,20 @@ add_subdirectory(3rd-party/mbedtls-3.2.1)
 include_directories(3rd-party/TestU01/include)
 link_directories(3rd-party/TestU01/lib)
 
+find_package(OpenMP REQUIRED)
+
 add_executable(rbg src/main.cxx)
-target_compile_options(rbg PRIVATE -Og -g)
+target_compile_options(rbg PRIVATE -O3 -g)
 target_link_libraries(rbg mbedcrypto)
 
 
 add_executable(rbg_test src/test_main.cxx)
-target_compile_options(rbg_test PRIVATE -Og -g)
-target_link_libraries(rbg_test mbedcrypto testu01 probdist mylib)
+target_compile_options(rbg_test PRIVATE -O3 -g)
+target_link_libraries(rbg_test mbedcrypto testu01 probdist mylib OpenMP::OpenMP_CXX)
+
+add_executable(rbg_test_nosha src/test_main_nosha.cxx)
+target_compile_options(rbg_test_nosha PRIVATE -O3 -g)
+target_link_libraries(rbg_test_nosha mbedcrypto testu01 probdist mylib OpenMP::OpenMP_CXX)
 
 add_custom_target(
   run

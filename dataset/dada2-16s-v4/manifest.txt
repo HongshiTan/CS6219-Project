@@ -1,0 +1,8 @@
+loader: fastq
+description: DADA2 tutorial mouse-gut 16S V4 amplicons (Illumina, ~25 MB).
+reads: forward_reads.fq
+# EMP 515F primer (V4 region forward primer used by Earth Microbiome Project).
+# Non-degenerate form. The first ~19 bp of every read is this primer.
+primer: GTGYCAGCMGCCGCGGTAA
+primer_len: 19
+slack: 4

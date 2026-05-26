@@ -1,0 +1,8 @@
+loader: fastq
+description: Loman Lab Zymo mock community, R10 pore, PCR-amplified (~12 GB).
+reads: Zymo-GridION-EVEN-BB-SN-PCR-R10HC-flipflop.fq
+# Oxford Nanopore SQK-LSK109 / PCR sequencing adapter (the "primer" on every
+# read after PCR enrichment). Standard ONT 1D ligation adapter sequence.
+primer: AATGTACTTCGTTCAGTTACGTATTGCT
+primer_len: 28
+slack: 6

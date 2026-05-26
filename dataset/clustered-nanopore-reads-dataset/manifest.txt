@@ -1,0 +1,6 @@
+loader: nanopore_clusters
+description: Microsoft clustered nanopore reads (10 000 synthetic strands).
+centers: Centers.txt
+clusters: Clusters.txt
+primer_len: 25
+slack: 5

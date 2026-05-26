@@ -13,7 +13,7 @@
 
 #include "sequence_real_data.hxx"
 #include "sequence_primer_error.hxx"
-#include "random_bit_generator.hxx"
+#include "random_bit_generator_nosha.hxx"
 
 extern "C" {
 #include "TestU01.h"
@@ -32,7 +32,6 @@ void print_buf(unsigned char *buf, size_t len) {
 
 // Default dataset path (relative to the build directory). Override with -d.
 static std::string dataset_dir   = "../dataset/clustered-nanopore-reads-dataset";
-// Legacy paths used by the biased-sampler fallback (no -p, no -d).
 static std::string clusters_file = "../dataset/clustered-nanopore-reads-dataset/Clusters.txt";
 
 // One of these is constructed at runtime depending on the -p flag.
@@ -62,7 +61,8 @@ const char* progname;
 void usage()
 {
     printf("%s: [-v] [-p] [-d <dataset_dir>] [-s|-m|-b|-l]\n", progname);
-    printf("  -p  use primer-error entropy source (vs. legacy biased sampler)\n");
+    printf("  no-SHA variant: emits the parity-folded accumulator without SHA-256 conditioning\n");
+    printf("  -p  use primer-error entropy source\n");
     printf("  -d  dataset directory (must contain manifest.txt)\n");
     printf("  -s  SmallCrush     -m  Crush     -b  BigCrush     -l  LinComp\n");
     printf("  -v  verbose TestU01 output\n");
@@ -91,7 +91,6 @@ int main (int argc, char** argv) {
         --argc; ++argv;
         if ((argc == 0) || (argv[0][0] != '-'))
             break;
-        // -d takes a separate argument
         if (argv[0][1] == 'd' && argv[0][2] == '\0') {
             --argc; ++argv;
             if (argc == 0) usage();
@@ -125,9 +124,9 @@ int main (int argc, char** argv) {
     }
 
     // Instantiate the chosen entropy source. -p selects the primer-error
-    // extractor (reads dataset_dir/manifest.txt and uses the per-read
-    // alignment errors); otherwise the original biased sampler over
-    // Clusters.txt.
+    // extractor (aligns Clusters.txt reads to Centers.txt and uses the errors
+    // as the entropy stream); otherwise we fall back to the original biased
+    // sampler over Clusters.txt.
     if (usePrimerErrors) {
         auto *ps = new PrimerErrorSequence<>(dataset_dir);
         std::cout << "primer-error 16-bit-token entropy = "

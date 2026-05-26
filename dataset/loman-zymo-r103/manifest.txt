@@ -1,0 +1,7 @@
+loader: fastq
+description: Loman Lab Zymo mock community, R10.3 pore, genomic (~4.8 GB).
+reads: Zymo-GridION-EVEN-3Peaks-R103-merged.fq
+# Same ONT 1D ligation adapter that prefixes every basecalled read.
+primer: AATGTACTTCGTTCAGTTACGTATTGCT
+primer_len: 28
+slack: 6

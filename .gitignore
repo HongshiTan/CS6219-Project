@@ -33,3 +33,20 @@ build
 *.exe
 *.out
 *.app
+
+# Third-party clones / installs (rebuilt by bootstrap.sh)
+3rd-party/TestU01-src/
+3rd-party/TestU01/
+
+# Fetched DNA data — re-downloadable via dataset/<name>/fetch.sh
+dataset/dada2-16s-v4/forward_reads.fq
+dataset/sra-16s-v4/reads.fq
+dataset/loman-zymo-r103/*.fq
+dataset/loman-zymo-r103/*.fq.gz
+dataset/loman-zymo-r103/gunzip.log
+dataset/loman-zymo-r10pcr/*.fq
+dataset/loman-zymo-r10pcr/*.fq.gz
+dataset/loman-zymo-r10pcr/gunzip.log
+
+# TestU01 logs from test_all.sh
+dataset/*/last_*.log

@@ -111,14 +111,19 @@ public:
     }
 
     UINT operator()() {
+        // Per-thread RNG: data and partition are read-only after construction,
+        // so each thread keeps its own engine + distribution and can sample
+        // concurrently without locking.
+        thread_local std::mt19937_64 t_rng{rd()};
         if (with_file_input){
-            UINT rn_index = dist(rd);
-            return data[rn_index];
+            thread_local std::uniform_int_distribution<UINT> t_dist(0, static_cast<UINT>(data.size() - 1));
+            return data[t_dist(t_rng)];
         }
         else{
+            thread_local std::uniform_int_distribution<UINT> t_dist(1, (1 << RANGE) - 1);
             return std::distance(
                    partition.begin(),
-                   std::lower_bound(partition.begin(), partition.end(), dist(rng)));
+                   std::lower_bound(partition.begin(), partition.end(), t_dist(t_rng)));
         }
     }
 };

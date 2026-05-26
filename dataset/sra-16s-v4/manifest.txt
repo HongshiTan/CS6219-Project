@@ -1,0 +1,7 @@
+loader: fastq
+description: SRA 16S V4 amplicon sample (single run, ~hundreds of MB).
+reads: reads.fq
+# EMP 515F primer; same as dada2-16s-v4.
+primer: GTGYCAGCMGCCGCGGTAA
+primer_len: 19
+slack: 4

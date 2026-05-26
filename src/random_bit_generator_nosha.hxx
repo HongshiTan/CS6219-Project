@@ -14,9 +14,9 @@ class RandonBitGenerator {
 
     std::vector<std::uint8_t> entropy;
 
-    // Produce one 32-byte SHA-256 digest worth of conditioned entropy into `out`.
-    // Reentrant: uses no instance state beyond `seq()`, which must itself be
-    // thread-safe (DataSequence uses thread_local RNG).
+    // No-SHA variant: emit the 256-bit parity-folded accumulator directly
+    // (first 32 bytes of raw_entropy) instead of running it through SHA-256.
+    // Source sampling and parity-fold loop are identical to the SHA build.
     static void refresh_block(Sequence<>& seq, std::uint8_t *out) {
         static const std::bitset<SHA256_BLOCK_BITS> mask = ((std::uint64_t)-1);
         std::bitset<SHA256_BLOCK_BITS> buf               = 0;
@@ -44,15 +44,7 @@ class RandonBitGenerator {
             idx++;
         }
 
-        int ret = mbedtls_sha256(
-            reinterpret_cast<const std::uint8_t *>(raw_entropy.data()),
-            SHA256_BLOCK_BYTES, out, 0);
-        if (ret != 0) {
-            char errbuf[BUFSIZ];
-            mbedtls_strerror(ret, errbuf, BUFSIZ);
-            fprintf(stderr, "mbedtls_sha256: %s\n", errbuf);
-            abort();
-        }
+        std::memcpy(out, raw_entropy.data(), SHA256_DIGEST_SIZE);
     }
 
     void refresh() {
@@ -83,9 +75,6 @@ class RandonBitGenerator {
     }
 
     // Parallel fill: independent 32-byte blocks are generated concurrently.
-    // Each block is a separate SHA-256 of fresh DNA-derived entropy, so the
-    // resulting buffer is statistically equivalent to a sequential run, just
-    // produced ~N_threads times faster.
     void fill_parallel(std::uint8_t *buf, size_t len) {
         constexpr size_t BLK = SHA256_DIGEST_SIZE;
         const size_t n_full = len / BLK;
