@@ -4,6 +4,8 @@ Each subdirectory is a self-contained dataset: a `fetch.sh` to obtain it and a
 `manifest.txt` that tells the C++ loader how to parse it and which sequence is
 the known primer.
 
+**TestU01 results for every dataset are in [`RESULTS.md`](RESULTS.md).**
+
 | Dir | Tech | Size | Primer | Notes |
 |-----|------|------|--------|-------|
 | `clustered-nanopore-reads-dataset/` | ONT (synthetic) | 30 MB | per-cluster ref (`Centers.txt`) | Shipped in-tree. Multi-cluster format. |
