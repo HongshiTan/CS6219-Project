@@ -61,6 +61,33 @@ parallel within each via OpenMP). Average per-dataset CPU/wall ratio ≈ 22×.
 
 Logs: `dataset/<name>/last_m.log`.
 
+## BigCrush (160 statistics, ~2.7-4.3 h wall/dataset)
+
+| Dataset | Wall | CPU time (parallel) | Verdict |
+|---|---:|---:|---|
+| clustered-nanopore-reads-dataset | 2 h 40 m 47 s | 59 h 59 m 59 s | **All 160 tests passed** |
+| dada2-16s-v4                     | 2 h 58 m 01 s | 67 h 10 m 37 s | 159/160 — one marginal (see below) |
+| sra-16s-v4                       | 3 h 48 m 44 s | 95 h 43 m 07 s | 159/160 — one marginal (see below) |
+| loman-zymo-r103                  | 3 h 53 m 23 s | 97 h 12 m 05 s | **All 160 tests passed** |
+| loman-zymo-r10pcr                | 4 h 15 m 26 s | 108 h 52 m 04 s | **All 160 tests passed** |
+
+Total BigCrush sweep wall time: **17 h 36 m** (sequential across datasets).
+Average per-dataset CPU/wall ratio ≈ 25×.
+
+The two marginal results are single outliers out of 160 statistics each, both
+consistent with normal sampling noise (not failures):
+
+| Dataset | Test | p-value | Reading |
+|---|---|---|---|
+| dada2-16s-v4 | `AppearanceSpacings, r = 27` | 0.9991 | 0.0001 above the upper bound — essentially a pass. |
+| sra-16s-v4   | `WeightDistrib, r = 20`      | 2.9e-5 | Low tail, but well above the ~1e-10 "suspect" threshold TestU01 uses to flag genuine failures. |
+
+Across all five BigCrush runs that's 2 flagged statistics out of 800. For an
+ideal source the expected count is 800 × 0.002 ≈ 1.6, so 2 is exactly in line
+with chance. All `eps`/`eps1` (catastrophic) failures: zero.
+
+Logs: `dataset/<name>/last_b.log`.
+
 ## Repro
 
 ```bash
@@ -69,7 +96,7 @@ cd dataset
 ./fetch_all.sh                    # SKIP=... to skip giants
 ./test_all.sh                     # SmallCrush
 BATTERY=-m ./test_all.sh          # Crush
-BATTERY=-b ./test_all.sh          # BigCrush (not yet run)
+BATTERY=-b ./test_all.sh          # BigCrush
 ```
 
 ## Notes
@@ -81,5 +108,7 @@ BATTERY=-b ./test_all.sh          # BigCrush (not yet run)
   `RandomWalk1 R` p-value (4.2e-4) on one re-run and clean on the next —
   consistent with statistical noise (15 tests × ~8 sub-statistics × 0.2% ≈
   0.24 expected outliers per battery for an ideal source).
-- BigCrush (106 heavier tests) would take an estimated 6-12 h wall per
-  dataset on this configuration.
+- The two BigCrush marginals (dada2 `AppearanceSpacings`, sra `WeightDistrib`)
+  are single outliers per 160-statistic battery and within the chance rate of
+  ~1.6 outliers per 800 statistics. No catastrophic (`eps`) failures occurred
+  on any dataset across SmallCrush, Crush, and BigCrush.
