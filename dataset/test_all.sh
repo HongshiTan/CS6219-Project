@@ -3,16 +3,22 @@
 # Skips directories whose `reads:` file (per manifest.txt) is missing.
 #
 # Usage:
-#   ./test_all.sh                 # SmallCrush (default)
-#   BATTERY=-m ./test_all.sh      # Crush
-#   BATTERY=-b ./test_all.sh      # BigCrush
+#   ./test_all.sh                                 # SHA build, SmallCrush
+#   BATTERY=-m ./test_all.sh                      # SHA build, Crush
+#   BATTERY=-b ./test_all.sh                      # SHA build, BigCrush
+#   RBG_BIN=rbg_test_toeplitz RBG_TAG=toeplitz BATTERY=-b ./test_all.sh
 #   THREADS=64 ./test_all.sh
+#
+# Per-dataset logs land in <dir>/last_<RBG_TAG>_<battery>.log so different
+# hash variants don't clobber each other.
 set -e
 here=$(cd "$(dirname "$0")" && pwd)
 build="$here/../build"
-bin="$build/rbg_test"
+rbg_bin="${RBG_BIN:-rbg_test}"
+rbg_tag="${RBG_TAG:-sha}"
+bin="$build/$rbg_bin"
 if [[ ! -x "$bin" ]]; then
-    echo "rbg_test not found at $bin -- run 'make rbg_test' in build/ first" >&2
+    echo "$rbg_bin not found at $bin -- run 'make $rbg_bin' in build/ first" >&2
     exit 1
 fi
 battery="${BATTERY:--s}"
@@ -40,6 +46,7 @@ present_file() {
     esac
 }
 
+printf "binary=%s  tag=%s  battery=%s  threads=%s\n" "$rbg_bin" "$rbg_tag" "$battery" "$threads"
 printf "%-40s  %-9s  %-8s  %s\n" "DATASET" "BATTERY" "THREADS" "RESULT"
 printf -- "----------------------------------------------------------------------------------\n"
 for d in "$here"/*/; do
@@ -65,6 +72,6 @@ for d in "$here"/*/; do
         verdict="ERROR (see $log)"
     fi
     printf "%-40s  %-9s  %-8s  %s\n" "$name" "$battery" "$threads" "$verdict"
-    cp "$log" "$d/last_${battery#-}.log"
+    cp "$log" "$d/last_${rbg_tag}_${battery#-}.log"
     rm -f "$log"
 done

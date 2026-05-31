@@ -50,3 +50,4 @@ dataset/loman-zymo-r10pcr/gunzip.log
 
 # TestU01 logs from test_all.sh
 dataset/*/last_*.log
+dataset/*_run.log
